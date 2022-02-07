@@ -40,7 +40,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'status' => 'required|max:10',   
+            'content' => 'required',
+        ]);
+        
         $task = new Task;
+        $task->status = $request->status;
         $task->content = $request->content;
         $task -> save();
         
@@ -82,8 +88,15 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $task = Message::FindOrFail($id);
+        $request->validate([
+            'status' => 'required|max:10',   
+            'content' => 'required',
+        ]);
         
+        $task = Task::FindOrFail($id);
+        //メッセージのモデルを参照しています。（岡田）
+        //上記訂正しました。（藤原）
+        $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
         
